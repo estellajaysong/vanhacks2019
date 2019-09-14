@@ -5,16 +5,16 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
+spreadsheet_id = '1d2XvYZyG0K8GAv5bwakrzJsDWAR5Z7poKGIA2Guko3M'
+range_name = 'A:Z'  # full range
 
 def main():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
+    """Reads values from a spreadsheet
     """
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -39,22 +39,23 @@ def main():
 
     # Call the Sheets API
     sheet = service.spreadsheets()
-    # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-    #                             range=SAMPLE_RANGE_NAME).execute()
-    # values = result.get('values', [])
+    result = sheet.values().get(spreadsheetId=spreadsheet_id,
+                                range=range_name).execute()
+    values = result.get('values', [])
+    print(values)
 
-    # if not values:
-    #     print('No data found.')
+    if not values:
+        print('No data found.')
 
-    title = 'test'
-    spreadsheet = {
-    'properties': {
-        'title': title
-        }
-    }
-    spreadsheet = service.spreadsheets().create(body=spreadsheet,
-                                        fields='spreadsheetId').execute()
-    print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
+    # title = 'test'
+    # spreadsheet = {
+    # 'properties': {
+    #     'title': title
+    #     }
+    # }
+    # spreadsheet = service.spreadsheets().create(body=spreadsheet,
+    #                                     fields='spreadsheetId').execute()
+    # print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
 
 if __name__ == '__main__':
     main()
